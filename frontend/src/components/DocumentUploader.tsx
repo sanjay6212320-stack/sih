@@ -25,7 +25,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({ onUploadSucc
       formData.append("file", file);
 
       const res = await citizenApi.uploadDocument(formData);
-      setExtractedData(res.extracted_data);
+      setExtractedData(res.extracted_data || null);
       onUploadSuccess(res);
       setFile(null);
       setTitle("");

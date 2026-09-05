@@ -54,35 +54,32 @@
 
 ---
 
-## ⚡ Quick Start Guide
+## 🚀 Deploying on Vercel
+
+GovConnect is fully configured with an in-browser TypeScript engine for zero-dependency 1-click deployment on **Vercel**:
+
+1. Push this repository to GitHub.
+2. Go to [Vercel Dashboard](https://vercel.com/new) -> Import Repository `sanjay6212320-stack/sih`.
+3. Set **Root Directory** to `frontend`.
+4. Click **Deploy**!
+
+---
+
+## ⚡ Quick Start Guide (Local Development)
 
 ### Prerequisites
-- Python 3.10+
 - Node.js 18+
 
 ### Step-by-Step Setup
 
-#### 1. Setup Backend
-```bash
-python -m venv venv
-.\venv\Scripts\activate
-pip install -r backend/requirements.txt
-python backend/seed.py
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
-```
-
-#### 2. Setup Frontend
+#### Setup & Run Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-#### 3. One-Click Launch (Windows)
-Double-click `start.bat` in the project root to seed the database and launch both servers simultaneously!
-
 - **Frontend Portal**: `http://localhost:5173`
-- **Backend API Docs (Swagger)**: `http://127.0.0.1:8000/docs`
 
 ---
 

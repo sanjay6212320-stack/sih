@@ -1,33 +1,23 @@
-import axios from "axios";
+// Mock API helper for full-stack Vercel client execution
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+export const mockDelay = (ms: number = 200): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
-export const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+export const getStoredToken = (): string | null => {
+  return localStorage.getItem("govconnect_token");
+};
 
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("govconnect_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+export const setStoredAuth = (token: string, user: any) => {
+  localStorage.setItem("govconnect_token", token);
+  localStorage.setItem("govconnect_user", JSON.stringify(user));
+};
 
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      // Clear token on 401 unauth
-      localStorage.removeItem("govconnect_token");
-      localStorage.removeItem("govconnect_user");
-    }
-    return Promise.reject(error);
-  }
-);
+export const clearStoredAuth = () => {
+  localStorage.removeItem("govconnect_token");
+  localStorage.removeItem("govconnect_user");
+};
+
+export const getCurrentUserFromStorage = () => {
+  const data = localStorage.getItem("govconnect_user");
+  return data ? JSON.parse(data) : null;
+};

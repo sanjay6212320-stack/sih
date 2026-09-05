@@ -46,11 +46,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setToken(data.access_token);
       localStorage.setItem("govconnect_token", data.access_token);
       const userObj: User = {
-        id: data.user_id,
-        email: data.email,
-        full_name: data.full_name,
-        role: data.role as UserRole,
-        department_code: data.department_code,
+        id: data.user.id,
+        email: data.user.email,
+        full_name: data.user.full_name,
+        role: data.user.role as UserRole,
+        department_code: data.user.department_code,
         is_active: true,
       };
       setUser(userObj);
@@ -67,11 +67,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setToken(data.access_token);
       localStorage.setItem("govconnect_token", data.access_token);
       const userObj: User = {
-        id: data.user_id,
-        email: data.email,
-        full_name: data.full_name,
-        role: data.role as UserRole,
-        department_code: data.department_code,
+        id: data.user.id,
+        email: data.user.email,
+        full_name: data.user.full_name,
+        role: data.user.role as UserRole,
+        department_code: data.user.department_code,
         is_active: true,
       };
       setUser(userObj);

@@ -1,46 +1,100 @@
-import { api } from "./api";
+import { dbState } from "../mock/dbState";
+import { mockDelay, getCurrentUserFromStorage } from "./api";
 
 export const citizenApi = {
   getProfile: async () => {
-    const res = await api.get("/citizen/profile");
-    return res.data;
+    await mockDelay(100);
+    const currentUser = getCurrentUserFromStorage();
+    if (!currentUser) throw new Error("Unauthorized");
+
+    let profile = dbState.getProfileByUserId(currentUser.id);
+    if (!profile) {
+      profile = dbState.createOrUpdateProfile(currentUser.id, {});
+    }
+    return profile;
   },
+
   updateProfile: async (data: any) => {
-    const res = await api.put("/citizen/profile", data);
-    return res.data;
+    await mockDelay(200);
+    const currentUser = getCurrentUserFromStorage();
+    if (!currentUser) throw new Error("Unauthorized");
+
+    const updated = dbState.createOrUpdateProfile(currentUser.id, data);
+    return updated;
   },
+
   getDocuments: async () => {
-    const res = await api.get("/documents");
-    return res.data;
+    await mockDelay(100);
+    return dbState.getDocuments();
   },
+
   uploadDocument: async (formData: FormData) => {
-    const res = await api.post("/documents/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    await mockDelay(350);
+    const currentUser = getCurrentUserFromStorage();
+    if (!currentUser) throw new Error("Unauthorized");
+
+    const docType = (formData.get("doc_type") as string) || "General Document";
+    const title = (formData.get("title") as string) || `${docType} Upload`;
+    const file = formData.get("file") as File;
+    const fileName = file ? file.name : "uploaded_doc.pdf";
+
+    const extracted_data = `OCR Extracted: Verified Document ${docType} for ${currentUser.full_name}, Upload Ref #${Math.floor(
+      100000 + Math.random() * 900000
+    )}`;
+
+    const newDoc = dbState.addDocument({
+      doc_type: docType,
+      title: title,
+      file_path: fileName,
+      status: "VERIFIED",
+      extracted_data,
     });
-    return res.data;
+
+    return newDoc;
   },
+
   deleteDocument: async (id: number) => {
-    const res = await api.delete(`/documents/${id}`);
-    return res.data;
+    await mockDelay(150);
+    return dbState.deleteDocument(id);
   },
+
   getConsents: async () => {
-    const res = await api.get("/consent");
-    return res.data;
+    await mockDelay(100);
+    return dbState.getConsents();
   },
+
   grantConsent: async (data: any) => {
-    const res = await api.post("/consent", data);
-    return res.data;
+    await mockDelay(200);
+    const currentUser = getCurrentUserFromStorage();
+    if (!currentUser) throw new Error("Unauthorized");
+
+    const profile = dbState.getProfileByUserId(currentUser.id);
+    const citizenId = profile ? profile.id : 1;
+
+    const newConsent = dbState.grantConsent({
+      citizen_id: citizenId,
+      requesting_dept: data.requesting_dept || "Department",
+      source_dept: data.source_dept || "Revenue Department",
+      fields_requested: data.fields_requested || ["Income Proof", "Identity Details"],
+      purpose: data.purpose || "Verification for government service eligibility",
+      status: "GRANTED",
+    });
+
+    return newConsent;
   },
+
   revokeConsent: async (id: number) => {
-    const res = await api.delete(`/consent/${id}`);
-    return res.data;
+    await mockDelay(150);
+    return dbState.revokeConsent(id);
   },
+
   getNotifications: async () => {
-    const res = await api.get("/notifications");
-    return res.data;
+    await mockDelay(100);
+    return dbState.getNotifications();
   },
+
   markNotificationRead: async (id: number) => {
-    const res = await api.put(`/notifications/${id}/read`);
-    return res.data;
+    await mockDelay(100);
+    return dbState.markNotificationRead(id);
   },
 };

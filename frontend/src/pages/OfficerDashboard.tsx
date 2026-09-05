@@ -19,7 +19,7 @@ export const OfficerDashboard: React.FC = () => {
   const { user } = useAuth();
   const [applications, setApplications] = useState<Application[]>([]);
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
-  const [statusInput, setStatusInput] = useState("APPROVED");
+  const [statusInput, setStatusInput] = useState<Application["status"]>("APPROVED");
   const [remarksInput, setRemarksInput] = useState("");
   const [updating, setUpdating] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -170,7 +170,7 @@ export const OfficerDashboard: React.FC = () => {
                 <label className="block text-xs font-semibold text-slate-700 mb-1">Update Status Decision</label>
                 <select
                   value={statusInput}
-                  onChange={(e) => setStatusInput(e.target.value)}
+                  onChange={(e) => setStatusInput(e.target.value as Application["status"])}
                   className="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold"
                 >
                   <option value="APPROVED">APPROVED — Grant Scheme Benefit</option>
