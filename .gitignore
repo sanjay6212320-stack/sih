@@ -1,0 +1,39 @@
+# Environment & Virtualenvs
+venv/
+env/
+.venv/
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Python cache & build outputs
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Frontend build outputs
+dist/
+build/
+frontend/dist/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+govconnect.db
+backend/govconnect.db
+
+# User uploads & sensitive data
+uploaded_documents/
+backend/uploaded_documents/
+.env
+.env.local
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
